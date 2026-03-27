@@ -1,0 +1,16 @@
+[
+    {
+        "Área/Equipamento": "Sala Limpa Grau A",
+        "Unidade": "UFC/placa",
+        "Limite Alerta": 10,
+        "Limite Ação": 20,
+        "Especificação Máxima": 30
+    },
+    {
+        "Área/Equipamento": "Luva",
+        "Unidade": "UFC/luva",
+        "Limite Alerta": 2,
+        "Limite Ação": 4,
+        "Especificação Máxima": 5
+    }
+]
