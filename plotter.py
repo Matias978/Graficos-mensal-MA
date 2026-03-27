@@ -17,8 +17,10 @@ def create_control_chart(df_ponto, area_name, ponto_name, limits):
     ax.plot(
         df_ponto['Data'], 
         df_ponto['Resultado'], 
-        color='black', 
-        marker='o', 
+        color='red',                 # Cor da linha
+        marker='o',                  # Tipo do marcador (círculo)
+        markerfacecolor='black',     # Cor de dentro da bolinha
+        markeredgecolor='black',     # Cor da borda da bolinha
         linestyle='-', 
         linewidth=1.5, 
         markersize=6,
@@ -61,8 +63,9 @@ def create_control_chart(df_ponto, area_name, ponto_name, limits):
     ax.grid(False)
     
     # Remover bordas superior e direita para um visual laboratorial mais limpo (opcional, mas recomendado)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    # Colocar False para deixar sem, sem as ""
+    ax.spines['top'].set_visible("black")
+    ax.spines['right'].set_visible("black")
     ax.spines['bottom'].set_color('black')
     ax.spines['left'].set_color('black')
     

@@ -10,7 +10,7 @@ from report_generator import generate_pdf_bytes
 
 # --- CONFIGURAÇÃO GLOBAL DA PÁGINA ---
 st.set_page_config(
-    page_title="Monitoramento Ambiental GMP", 
+    page_title="Sistema MAI", 
     page_icon="🧪", 
     layout="wide",
     initial_sidebar_state="expanded"
@@ -229,7 +229,7 @@ def render_upload_page():
 
 # --- ROTIADOR PRINCIPAL ---
 def main():
-    st.sidebar.title("🧪 Sistema MAP")
+    st.sidebar.title("🧪 Sistema MAI")
     st.sidebar.markdown("Monitoramento Ambiental Integrado")
     st.sidebar.divider()
     
