@@ -98,7 +98,7 @@ def render_config_page():
 
 def render_upload_page():
     """Etapas 2 a 5: Ingestão, Filtro de Mês, Motor de Alertas, Gráficos e Exportação."""
-    st.header("📊 Ingestão e Processamento de Dados")
+    st.header("📊 Inserção e Processamento de Dados")
 
     df_config = load_config()
     lista_areas = df_config["Área/Equipamento"].tolist()
@@ -229,15 +229,15 @@ def render_upload_page():
 
 # --- ROTIADOR PRINCIPAL ---
 def main():
-    st.sidebar.title("🧪 Sistema MAI")
-    st.sidebar.markdown("Monitoramento Ambiental Integrado")
+    st.sidebar.title("🧪 Gerador de relatório Mensal")
+    st.sidebar.markdown("Monitoramento Ambiental")
     st.sidebar.divider()
     
-    menu = st.sidebar.radio("Navegação:", ["📊 Ingestão de Dados", "⚙️ Configurações de Áreas"])
+    menu = st.sidebar.radio("Navegação:", ["📊 Inserção de Dados", "⚙️ Configurações de Áreas"])
 
     if menu == "⚙️ Configurações de Áreas":
         render_config_page()
-    elif menu == "📊 Ingestão de Dados":
+    elif menu == "📊 Inserção de Dados":
         render_upload_page()
 
 if __name__ == "__main__":
