@@ -1,16 +1,268 @@
 [
     {
-        "Área/Equipamento": "Sala A",
-        "Unidade": "UFC/placa",
-        "Limite Alerta": 10,
-        "Limite Ação": 20,
-        "Especificação Máxima": 30
+        "Área/Equipamento": "Primer - Grau D - Ativo",
+        "Unidade": "UFC/M³",
+        "Limite Alerta": 101,
+        "Limite Ação": 156,
+        "Especificação Máxima": 200
     },
     {
-        "Área/Equipamento": "Luvas",
-        "Unidade": "UFC/luva",
+        "Área/Equipamento": "Primer - Grau D - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Betalactâmicos - Grau D - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Betalactâmicos - Grau D - Superfície",
+        "Unidade": "UFC/Placas",
+        "Limite Alerta": 20,
+        "Limite Ação": 35,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "Betalactâmicos - Grau D - Ativo",
+        "Unidade": "UFC/m³",
+        "Limite Alerta": 80,
+        "Limite Ação": 140,
+        "Especificação Máxima": 200
+    },
+    {
+        "Área/Equipamento": "Sólidos - Saúde Animal (Manipulação) - Grau D  - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Sólidos - Saúde Animal (Manipulação) - Grau D - Ativo",
+        "Unidade": "UFC/m³",
+        "Limite Alerta": 80,
+        "Limite Ação": 140,
+        "Especificação Máxima": 200
+    },
+    {
+        "Área/Equipamento": "Sólidos - Saúde Animal (Envaze) - Grau D - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Sólidos - Saúde Animal (Manipulação) - Grau D - Ativo",
+        "Unidade": "UFC/m³",
+        "Limite Alerta": 80,
+        "Limite Ação": 140,
+        "Especificação Máxima": 200
+    },
+    {
+        "Área/Equipamento": "Sólidos - Saúde Humana- Grau D - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Sólidos - Saúde Humana- Grau D - Ativo",
+        "Unidade": "UFC/m³",
+        "Limite Alerta": 80,
+        "Limite Ação": 124,
+        "Especificação Máxima": 200
+    },
+    {
+        "Área/Equipamento": "Semissólidos - Grau D - Passivo ",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 50,
+        "Limite Ação": 80,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Semissólidos - Grau D - Ativo",
+        "Unidade": "UFC/M³",
+        "Limite Alerta": 100,
+        "Limite Ação": 160,
+        "Especificação Máxima": 200
+    },
+    {
+        "Área/Equipamento": "Semissólidos - Grau D - Superfície",
+        "Unidade": "UFC/Placa",
+        "Limite Alerta": 25,
+        "Limite Ação": 40,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 1 - Saúde Animal - Grau C - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 18,
+        "Limite Ação": 33,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 1 - Saúde Animal - Grau C - Ativo",
+        "Unidade": "UFC/m³",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 1 - Saúde Animal - Grau C - Superfície",
+        "Unidade": "UFC/placa",
+        "Limite Alerta": 10,
+        "Limite Ação": 18,
+        "Especificação Máxima": 25
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 1 - Saúde Animal - Grau D - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 1 - Saúde Animal - Grau D - Ativo",
+        "Unidade": "UFC/M³",
+        "Limite Alerta": 80,
+        "Limite Ação": 140,
+        "Especificação Máxima": 200
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 2 - Saúde Humana - Grau C - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 20,
+        "Limite Ação": 35,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 2 - Saúde Humana - Grau C - Ativo",
+        "Unidade": "UFC/M³",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 2 - Saúde Humana - Grau C - Superfície",
+        "Unidade": "UFC/Placa",
+        "Limite Alerta": 10,
+        "Limite Ação": 18,
+        "Especificação Máxima": 25
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 2 - Saúde Humana - Grau D - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 55,
+        "Limite Ação": 88,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 2 - Saúde Humana - Grau D - Ativo",
+        "Unidade": "UFC/M³",
+        "Limite Alerta": 80,
+        "Limite Ação": 140,
+        "Especificação Máxima": 200
+    },
+    {
+        "Área/Equipamento": "Cabine de amostragem 2 - Saúde Humana - Grau D - Passivo",
+        "Unidade": "UFC/Placa",
+        "Limite Alerta": 20,
+        "Limite Ação": 35,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "Dispensação 1 - Saúde Humana - Grau C - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 20,
+        "Limite Ação": 35,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "Dispensação 1 - Saúde Humana - Grau C -  Ativo",
+        "Unidade": "UFC/M³",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Dispensação 1 - Saúde Humana -  Grau C - Superfície",
+        "Unidade": "UFC/Placa",
+        "Limite Alerta": 10,
+        "Limite Ação": 18,
+        "Especificação Máxima": 25
+    },
+    {
+        "Área/Equipamento": "Dispensação 2 - Saúde Animal - Grau C - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 15,
+        "Limite Ação": 24,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "Dispensação 2 - Saúde Animal - Grau C - Ativo",
+        "Unidade": "UFC/M³",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Dispensação 2 - Saúde Animal - Grau C - Superfície",
+        "Unidade": "UFC/placa",
+        "Limite Alerta": 10,
+        "Limite Ação": 18,
+        "Especificação Máxima": 25
+    },
+    {
+        "Área/Equipamento": "Dispensação 2 - Saúde Animal - Grau D - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 40,
+        "Limite Ação": 70,
+        "Especificação Máxima": 100
+    },
+    {
+        "Área/Equipamento": "Dispensação 2 - Saúde Animal - Grau D - Ativo",
+        "Unidade": "UFC/M³",
+        "Limite Alerta": 80,
+        "Limite Ação": 140,
+        "Especificação Máxima": 200
+    },
+    {
+        "Área/Equipamento": "TL System - Grau A - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 0,
+        "Limite Ação": 0,
+        "Especificação Máxima": 1
+    },
+    {
+        "Área/Equipamento": "TL System - Grau B - Passivo",
+        "Unidade": "UFC/4 horas",
         "Limite Alerta": 2,
         "Limite Ação": 4,
         "Especificação Máxima": 5
+    },
+    {
+        "Área/Equipamento": "TL System - Grau C - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 20,
+        "Limite Ação": 35,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "TL System - West Capper - Passivo - Adjacente a APA",
+        "Unidade": "UFC/4 hora",
+        "Limite Alerta": 25,
+        "Limite Ação": 40,
+        "Especificação Máxima": 50
+    },
+    {
+        "Área/Equipamento": "TL System - Cozzoli - Passivo",
+        "Unidade": "UFC/4 horas",
+        "Limite Alerta": 25,
+        "Limite Ação": 40,
+        "Especificação Máxima": 50
     }
 ]

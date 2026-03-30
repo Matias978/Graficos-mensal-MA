@@ -10,7 +10,7 @@ from report_generator import generate_pdf_bytes
 
 # --- CONFIGURAÇÃO GLOBAL DA PÁGINA ---
 st.set_page_config(
-    page_title="Sistema MAI", 
+    page_title="Sistema MA", 
     page_icon="🧪", 
     layout="wide",
     initial_sidebar_state="expanded"
@@ -229,7 +229,7 @@ def render_upload_page():
 
 # --- ROTIADOR PRINCIPAL ---
 def main():
-    st.sidebar.title("🧪 Gerador de relatório Mensal")
+    st.sidebar.title("🧫 Gerador de relatório Mensal")
     st.sidebar.markdown("Monitoramento Ambiental")
     st.sidebar.divider()
     
