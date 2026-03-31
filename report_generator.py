@@ -11,17 +11,10 @@ class GMPReport(FPDF):
         self.limits = limits
 
     def header(self):
-        """Cabeçalho com título centralizado e limites na lateral direita."""
-        # --- 1. Títulos Centrais ---
-        self.set_y(15) # Dá um pequeno respiro do topo da folha
-        self.set_font("helvetica", "B", 14)
-        self.cell(0, 8, str(self.area_name).upper(), align="C", new_x="LMARGIN", new_y="NEXT")
+        """Cabeçalho com limites na direita e título centralizado com quebra automática."""
         
-        self.set_font("helvetica", "B", 12)
-        self.cell(0, 6, str(self.month_year).upper(), align="C", new_x="LMARGIN", new_y="NEXT")
-        
-        # --- 2. Limites de Especificação (Canto Superior Direito) ---
-        # Largura da página A4 é 210mm. Vamos posicionar o cursor no X=130 e Y=10
+        # --- 1. Limites de Especificação (Canto Superior Direito) ---
+        # Desenhamos os limites PRIMEIRO, bem no topo (Y = 10)
         self.set_xy(130, 10) 
         
         unidade = self.limits.get('Unidade', 'UFC/placa')
@@ -30,7 +23,7 @@ class GMPReport(FPDF):
         self.cell(70, 4, "Limites de Especificação:", align="R", new_x="LMARGIN", new_y="NEXT")
         
         self.set_font("helvetica", "", 8)
-        self.set_x(130) # Reseta o X para a direita a cada nova linha
+        self.set_x(130)
         self.cell(70, 4, f"Limite Alerta: >= {self.limits.get('Limite Alerta')} {unidade}", align="R", new_x="LMARGIN", new_y="NEXT")
         
         self.set_x(130)
@@ -39,8 +32,21 @@ class GMPReport(FPDF):
         self.set_x(130)
         self.cell(70, 4, f"Especificação: Máx. {self.limits.get('Especificação Máxima')} {unidade}", align="R", new_x="LMARGIN", new_y="NEXT")
 
-        # Retorna o cursor Y para o corpo da página (abaixo do título e dos limites)
-        self.set_y(35) 
+        # --- 2. Títulos Centrais ---
+        # Como os limites descem até o Y=26, colocamos o título a partir do Y=30
+        self.set_y(30) 
+        self.set_font("helvetica", "B", 14)
+        
+        # Usamos multi_cell em vez de cell para que nomes gigantes quebrem de linha sozinhos
+        self.multi_cell(0, 6, str(self.area_name).upper(), align="C")
+        
+        self.set_font("helvetica", "B", 12)
+        # Dá um pequeno espaço e escreve o mês
+        self.set_y(self.get_y() + 2)
+        self.multi_cell(0, 6, str(self.month_year).upper(), align="C")
+
+        # Dá um respiro final antes de começar a tabela ou gráficos no corpo da página
+        self.set_y(self.get_y() + 8)
 
     def footer(self):
         """Rodapé com as assinaturas e o campo 'DATA:' separados em duas linhas."""
@@ -88,8 +94,6 @@ def generate_pdf_bytes(df, area_name, limits, dict_figuras):
     pdf.set_auto_page_break(auto=True, margin=35) 
     pdf.add_page()
     
-    # Nota: O bloco de limites foi removido daqui pois agora pertence ao método header()
-
     # --- 1. TABELA DE DADOS BRUTOS ---
     pdf.set_font("helvetica", "B", 9)
     col_w = [40, 50, 50] 

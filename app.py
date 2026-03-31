@@ -18,22 +18,23 @@ st.set_page_config(
 
 # --- FUNÇÕES DE LÓGICA E TRATAMENTO DE ERROS ---
 
-def find_area_match(filename, area_list):
-    """Busca heurística para vincular o arquivo à área correta."""
-    filename_clean = filename.lower()
+def find_area_match(text_to_search, area_list):
+    """Busca heurística para vincular o texto (nome do arquivo ou aba) à área correta."""
+    text_clean = text_to_search.lower()
     for area in area_list:
-        if area.lower().strip() in filename_clean:
+        if area.lower().strip() in text_clean:
             return area
     return None
 
-def process_data(file):
-    """Lê o Excel com tratamento de erros robusto e Data Integrity."""
+def process_data(file, sheet_name):
+    """Lê uma aba específica do Excel com tratamento de erros robusto e Data Integrity."""
     try:
-        df = pd.read_excel(file)
+        # Lê apenas a aba selecionada pelo usuário
+        df = pd.read_excel(file, sheet_name=sheet_name)
         
         # 1. Validação de Arquivo Vazio
         if df.empty:
-            st.error("❌ O arquivo enviado está vazio. Verifique a planilha e tente novamente.")
+            st.error(f"❌ A aba '{sheet_name}' está vazia. Verifique a planilha e tente novamente.")
             return None
 
         # 2. Padronização de Colunas (Remove espaços e capitaliza)
@@ -43,7 +44,7 @@ def process_data(file):
         required_cols = ["Ponto", "Data", "Resultado"]
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
-            st.error(f"❌ Erro de Estrutura: Faltam as seguintes colunas obrigatórias na planilha: {missing_cols}")
+            st.error(f"❌ Erro de Estrutura na aba '{sheet_name}': Faltam as seguintes colunas obrigatórias: {missing_cols}")
             st.info("As colunas esperadas são: 'Ponto', 'Data' e 'Resultado'.")
             return None
             
@@ -54,20 +55,24 @@ def process_data(file):
             st.error("❌ Erro de Formato: A coluna 'Data' não contém datas válidas.")
             return None
             
-        # Converte Resultado para numérico (transforma textos acidentais em NaN e depois avisa)
+        # Converte Resultado para numérico
         df['Resultado'] = pd.to_numeric(df['Resultado'], errors='coerce')
         if df['Resultado'].isnull().any():
             linhas_erro = df[df['Resultado'].isnull()].index.tolist()
             st.warning(f"⚠️ Aviso: Foram encontrados valores não numéricos na coluna 'Resultado' nas linhas {linhas_erro}. Estes dados foram ignorados no gráfico.")
             df = df.dropna(subset=['Resultado']) # Remove as linhas corrompidas para não quebrar o plot
 
+            # --- NOVA LINHA AQUI ---
+        # Força a conversão de todos os resultados para Inteiros (remove as casas decimais)
+        df['Resultado'] = df['Resultado'].astype(int)
+
         return df
 
     except ValueError as ve:
-        st.error(f"❌ Erro de Leitura: O formato do arquivo não é suportado ou está corrompido. Detalhes: {ve}")
+        st.error(f"❌ Erro de Leitura: O formato do arquivo não é suportado ou a aba está corrompida. Detalhes: {ve}")
         return None
     except Exception as e:
-        st.error(f"❌ Ocorreu um erro inesperado ao processar o arquivo. Detalhes: {e}")
+        st.error(f"❌ Ocorreu um erro inesperado ao processar a aba. Detalhes: {e}")
         return None
 
 # --- INTERFACES (UI) ---
@@ -97,7 +102,7 @@ def render_config_page():
         st.success("✅ Configurações atualizadas e registradas no sistema!")
 
 def render_upload_page():
-    """Etapas 2 a 5: Ingestão, Filtro de Mês, Motor de Alertas, Gráficos e Exportação."""
+    """Etapas 2 a 5: Inserção, Seleção de Aba, Filtro de Mês, Motor de Alertas, Gráficos e Exportação."""
     st.header("📊 Inserção e Processamento de Dados")
 
     df_config = load_config()
@@ -110,22 +115,40 @@ def render_upload_page():
     uploaded_file = st.file_uploader("Anexe a planilha de monitoramento (.xlsx)", type=["xlsx"])
 
     if uploaded_file:
-        col1, col2 = st.columns([1, 1])
-        suggested_area = find_area_match(uploaded_file.name, lista_areas)
+        try:
+            # Carrega o arquivo Excel em memória para extrair os nomes das abas
+            xls = pd.ExcelFile(uploaded_file)
+            sheet_names = xls.sheet_names
+        except Exception as e:
+            st.error(f"❌ Erro ao ler as abas do arquivo Excel: {e}")
+            return
+            
+        st.divider()
+        st.subheader("📂 Seleção de Dados e Área")
+        
+        col_sheet, col_area = st.columns(2)
 
-        with col1:
-            st.subheader("🔍 Identificação da Área")
+        with col_sheet:
+            # 1. Usuário escolhe a aba
+            selected_sheet = st.selectbox("1. Selecione a Aba (Planilha) a ser lida:", sheet_names)
+
+        # 2. Match Inteligente: Procura o nome da área tanto no nome do arquivo quanto no nome da aba
+        texto_busca = f"{uploaded_file.name} {selected_sheet}"
+        suggested_area = find_area_match(texto_busca, lista_areas)
+
+        with col_area:
             if suggested_area:
                 st.success(f"✅ Área detectada: **{suggested_area}**")
-                area_final = st.selectbox("Confirmar Área:", lista_areas, index=lista_areas.index(suggested_area))
+                area_final = st.selectbox("2. Confirmar Área:", lista_areas, index=lista_areas.index(suggested_area))
             else:
-                st.warning("⚠️ Área não identificada pelo nome do arquivo.")
-                area_final = st.selectbox("Selecione a área manualmente:", ["---"] + lista_areas)
+                st.warning("⚠️ Área não identificada automaticamente.")
+                area_final = st.selectbox("2. Selecione a área manualmente:", ["---"] + lista_areas)
 
         if area_final != "---":
             # Botão para iniciar o processamento
             if st.button("Validar e Carregar Dados", type="primary"):
-                df_processado = process_data(uploaded_file)
+                # Passamos a aba selecionada para a função
+                df_processado = process_data(uploaded_file, selected_sheet)
                 
                 if df_processado is not None:
                     limites = df_config[df_config["Área/Equipamento"] == area_final].iloc[0]
