@@ -10,7 +10,7 @@ from report_generator import generate_pdf_bytes
 
 # --- CONFIGURAÇÃO GLOBAL DA PÁGINA ---
 st.set_page_config(
-    page_title="Sistema MA", 
+    page_title="Sistema SOMA", 
     page_icon="🧪", 
     layout="wide",
     initial_sidebar_state="expanded"
@@ -78,28 +78,40 @@ def process_data(file, sheet_name):
 # --- INTERFACES (UI) ---
 
 def render_config_page():
-    """Etapa 1: Interface de Configurações."""
+    """Etapa 1: Interface de Configurações (Apenas Leitura para usuário)."""
     st.header("⚙️ Configurações de Áreas e Limites")
-    st.markdown("Defina os **Limites de Alerta e Ação** para validação automática de desvios.")
+    st.markdown("Abaixo estão os **Limites de Alerta e Ação** cadastrados no sistema. *(Apenas leitura)*")
 
     df_config = load_config()
 
-    edited_df = st.data_editor(
+    # MODO USUÁRIO - APENAS LEITURA (Visível para todos)
+    st.dataframe(
         df_config,
-        num_rows="dynamic",
         use_container_width=True,
-        column_config={
-            "Área/Equipamento": st.column_config.TextColumn("Identificador da Área", required=True),
-            "Unidade": st.column_config.TextColumn("Unidade", help="Digite a unidade. Ex: UFC/placa, UFC/m³, UFC/swab", required=True),
-            "Limite Alerta": st.column_config.NumberColumn("Lim. Alerta", min_value=0),
-            "Limite Ação": st.column_config.NumberColumn("Lim. Ação", min_value=0),
-            "Especificação Máxima": st.column_config.NumberColumn("Espec. Máxima", min_value=0)
-        }
+        hide_index=True 
     )
+    
+    # --- MODO ADMIN - CONFIGURAÇÃO DE ÁREAS (Escondido) ---
+    # Quando VOCÊ quiser editar, apague os '#' destas linhas abaixo.
+    # Quando terminar de editar e salvar, coloque os '#' de volta antes de mandar para a nuvem!
+    
+    # edited_df = st.data_editor(
+    #     df_config,
+    #     num_rows="dynamic",
+    #     use_container_width=True,
+    #     column_config={
+    #         "Área/Equipamento": st.column_config.TextColumn("Identificador da Área", required=True),
+    #         "Unidade": st.column_config.TextColumn("Unidade", help="Digite a unidade. Ex: UFC/placa, UFC/m³, UFC/swab", required=True),
+    #         "Limite Alerta": st.column_config.NumberColumn("Lim. Alerta", min_value=0),
+    #         "Limite Ação": st.column_config.NumberColumn("Lim. Ação", min_value=0),
+    #         "Especificação Máxima": st.column_config.NumberColumn("Espec. Máxima", min_value=0)
+    #     }
+    # )
 
-    if st.button("Salvar Configurações", type="primary", use_container_width=True):
-        save_config(edited_df)
-        st.success("✅ Configurações atualizadas e registradas no sistema!")
+    # if st.button("Salvar Configurações", type="primary", use_container_width=True):
+    #     save_config(edited_df)
+    #     st.success("✅ Configurações atualizadas e registradas no sistema!")
+
 
 def render_upload_page():
     """Etapas 2 a 5: Inserção, Seleção de Aba, Filtro de Mês, Motor de Alertas, Gráficos e Exportação."""
@@ -252,13 +264,15 @@ def render_upload_page():
 
 # --- ROTIADOR PRINCIPAL ---
 def main():
-    st.sidebar.title("🧫 Gerador de relatório Mensal")
-    st.sidebar.markdown("Monitoramento Ambiental")
+    st.sidebar.title("🧫 Sistema SOMA")
+    st.sidebar.markdown("Sistema Otimizado de Monitoramento Ambiental")
+    st.sidebar.caption("Versão .0")
     st.sidebar.divider()
     
-    menu = st.sidebar.radio("Navegação:", ["📊 Inserção de Dados", "⚙️ Configurações de Áreas"])
+    #MODO ADMIN (O)
+    menu = st.sidebar.radio("Navegação:", ["📊 Inserção de Dados", "⚙️ Config. de Especificações"])
 
-    if menu == "⚙️ Configurações de Áreas":
+    if menu == "⚙️ Config. de Especificações":
         render_config_page()
     elif menu == "📊 Inserção de Dados":
         render_upload_page()
