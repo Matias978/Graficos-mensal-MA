@@ -1,46 +1,57 @@
+import numpy as np
 import pandas as pd
+
 
 def evaluate_compliance(df, limits):
     """
     Avalia os resultados contra os limites normativos (Alerta, Ação, Especificação).
     Retorna um DataFrame apenas com os desvios e o Status Final do Lote/Área.
+    Usa operações vetorializadas (np.select) ao invés de iterrows.
     """
     lim_alerta = limits.get('Limite Alerta', 0)
     lim_acao = limits.get('Limite Ação', 0)
     lim_espec = limits.get('Especificação Máxima', 0)
-    
-    desvios = []
-    status_critico = 0 # 0: Aprovado, 1: Alerta, 2: Ação, 3: OOS (Out of Specification)
-    
-    for _, row in df.iterrows():
-        res = row['Resultado']
-        ponto = row['Ponto']
-        # Tratamento de data para exibição
-        data_str = row['Data'].strftime('%d/%m/%Y') if pd.notnull(row['Data']) else "Data Inválida"
-        
-        # Avaliação Hierárquica (do mais crítico para o menos crítico)
-        if res >= lim_espec:
-            desvios.append({
-                'Data': data_str, 'Ponto': ponto, 'Resultado': res, 
-                'Classificação': 'Fora de Especificação (OOS)', 'Severidade': '🔴 Crítico'
-            })
-            status_critico = max(status_critico, 3)
-            
-        elif res >= lim_acao:
-            desvios.append({
-                'Data': data_str, 'Ponto': ponto, 'Resultado': res, 
-                'Classificação': 'Limite de Ação Excedido', 'Severidade': '🟠 Alta'
-            })
-            status_critico = max(status_critico, 2)
-            
-        elif res >= lim_alerta:
-            desvios.append({
-                'Data': data_str, 'Ponto': ponto, 'Resultado': res, 
-                'Classificação': 'Limite de Alerta Excedido', 'Severidade': '🟡 Moderada'
-            })
-            status_critico = max(status_critico, 1)
 
-    # Determinação do Parecer Final
+    df = df.copy()
+
+    # Pré-formata datas
+    df['Data_str'] = df['Data'].apply(
+        lambda d: d.strftime('%d/%m/%Y') if pd.notnull(d) else "Data Inválida"
+    )
+
+    # Classificação vetorial (do mais crítico ao menos crítico)
+    conditions = [
+        df['Resultado'] >= lim_espec,
+        df['Resultado'] >= lim_acao,
+        df['Resultado'] >= lim_alerta,
+    ]
+    choices_class = [
+        'Fora de Especificação (OOS)',
+        'Limite de Ação Excedido',
+        'Limite de Alerta Excedido',
+    ]
+    choices_sev = [
+        '🔴 Crítico',
+        '🟠 Alta',
+        '🟡 Moderada',
+    ]
+
+    df['Classificação'] = np.select(conditions, choices_class, default='Conforme')
+    df['Severidade'] = np.select(conditions, choices_sev, default='')
+
+    # Isola desvios
+    mask_desvio = df['Classificação'] != 'Conforme'
+    df_desvios = df.loc[mask_desvio, ['Data_str', 'Ponto', 'Resultado', 'Classificação', 'Severidade']].copy()
+    df_desvios.rename(columns={'Data_str': 'Data'}, inplace=True)
+
+    # Severidade máxima
+    severity_order = {'Fora de Especificação (OOS)': 3, 'Limite de Ação Excedido': 2, 'Limite de Alerta Excedido': 1}
+    status_critico = 0
+    if not df_desvios.empty:
+        max_class = df_desvios['Classificação'].map(severity_order).max()
+        status_critico = int(max_class) if pd.notna(max_class) else 0
+
+    # Parecer Final
     if status_critico == 0:
         parecer = "✅ APROVADO - Todos os resultados encontram-se dentro das especificações normativas."
         cor_parecer = "success"
@@ -53,7 +64,5 @@ def evaluate_compliance(df, limits):
     else:
         parecer = "❌ REPROVADO (OOS) - Resultados fora da Especificação Máxima. Abrir desvio na Garantia da Qualidade imediatamente."
         cor_parecer = "error"
-        
-    df_desvios = pd.DataFrame(desvios) if desvios else pd.DataFrame(columns=['Data', 'Ponto', 'Resultado', 'Classificação', 'Severidade'])
-    
+
     return df_desvios, parecer, cor_parecer
