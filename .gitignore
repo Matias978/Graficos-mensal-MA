@@ -28,6 +28,7 @@ Thumbs.db
 soma.db
 .streamlit/secrets.toml
 .env
+.claude
 
 # Config
 config.json.tmp

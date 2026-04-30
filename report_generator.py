@@ -13,7 +13,14 @@ class GMPReport(FPDF):
         self.limits = limits
 
     def header(self):
-        """Cabeçalho com limites na direita e título centralizado com quebra automática."""
+        """Cabeçalho com logo, limites na direita e título centralizado com quebra automática."""
+        
+        # --- 0. LOGO DA EMPRESA (Canto Superior Esquerdo) ---
+        # Certifique-se de que o arquivo 'logo.png' (ou jpg) está na mesma pasta do código
+        logo_path = "logo.png" 
+        if os.path.exists(logo_path):
+            # Posiciona em X=10 (margem esquerda), Y=10 (margem superior), com largura de 35mm
+            self.image(logo_path, x=10, y=10, w=35)
 
         # --- 1. Limites de Especificação (Canto Superior Direito) ---
         # Desenhamos os limites PRIMEIRO, bem no topo (Y = 10)

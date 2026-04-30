@@ -64,8 +64,8 @@ def create_control_chart(df_ponto, area_name, ponto_name, limits):
     ax.grid(False)
 
     # Remover bordas superior e direita para um visual laboratorial mais limpo
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible('black')
+    ax.spines['right'].set_visible('black')
     ax.spines['bottom'].set_color('black')
     ax.spines['left'].set_color('black')
 
