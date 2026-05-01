@@ -25,7 +25,7 @@ env/
 Thumbs.db
 
 # Database and secrets
-soma.db
+#soma.db
 .streamlit/secrets.toml
 .env
 .claude
